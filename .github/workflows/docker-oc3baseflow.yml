@@ -1,0 +1,45 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build and Push oc2baseflow
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+
+      # Login to Github
+      - name: Login to GitHub Container Registry
+        run: |
+          echo ${{ secrets.CONTAINER_REGISTRY_TOKEN }} | docker login docker.pkg.github.com -u ${{ github.repository_owner }} --password-stdin
+
+
+      # Build and Push Container
+      - name: Build and Tag Docker Image
+        run: |
+          docker build  -t docker.pkg.github.com/${{ github.repository }}/wyc:oc2baseflow ./php7-apache docker
+          docker push docker.pkg.github.com/${{ github.repository }}/wyc:oc2baseflow
+
+
+      # Logout from Github
+      - name: Logout from GitHub Container Registry
+        run: docker logout docker.pkg.github.com
