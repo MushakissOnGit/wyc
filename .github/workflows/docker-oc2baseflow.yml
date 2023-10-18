@@ -42,4 +42,4 @@ jobs:
 
       # Logout from Github
       - name: Logout from GitHub Container Registry
-        run: docker logout docker.pkg.github.com
+        run: docker logout ghcr.io
