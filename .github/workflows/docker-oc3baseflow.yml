@@ -36,7 +36,7 @@ jobs:
       # Build and Push Container
       - name: Build and Tag Docker Image
         run: |
-          docker build  -t docker.pkg.github.com/${{ github.repository }}/wyc:oc2baseflow ./php7-apache docker
+          docker build ./php7-apache docker -t docker.pkg.github.com/${{ github.repository }}/wyc:oc2baseflow
           docker push docker.pkg.github.com/${{ github.repository }}/wyc:oc2baseflow
 
 
